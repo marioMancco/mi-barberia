@@ -27,7 +27,7 @@ export default function BossView() {
   }, []);
 
   const totalCortes = cortes.length;
-  const sumatoriaDeuda = cortes.reduce((sum, c) => sum + (c.comisionJefe || 5000), 0);
+  const sumatoriaDeuda = cortes.reduce((sum, c) => sum + (c.comisionJefe ?? 5000), 0);
 
   return (
     <div className="min-h-screen bg-background p-6 lg:p-12 text-foreground">

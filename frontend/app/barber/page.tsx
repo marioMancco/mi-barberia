@@ -44,8 +44,8 @@ export default function BarberView() {
 
   const totalCortes = cortes.length;
   // Based on the given rules: Barber gets 10,000 and Boss gets 5,000 per cut
-  const barberGananciaAcumulada = cortes.reduce((sum, c) => sum + (c.gananciaBarbero || 10000), 0);
-  const deudaJefeAcumulada = cortes.reduce((sum, c) => sum + (c.comisionJefe || 5000), 0);
+  const barberGananciaAcumulada = cortes.reduce((sum, c) => sum + (c.gananciaBarbero ?? 10000), 0);
+  const deudaJefeAcumulada = cortes.reduce((sum, c) => sum + (c.comisionJefe ?? 5000), 0);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,11 +71,11 @@ export default function BarberView() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-accent/5 blur-[120px] rounded-full pointer-events-none" />
         <GlassCard className="w-full max-w-sm flex flex-col items-center text-center p-8 bg-zinc-900/80 z-10">
           <div className="w-16 h-16 bg-accent/20 rounded-full flex items-center justify-center mb-6">
-            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-accent"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-accent"><rect width="18" height="11" x="3" y="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
           </div>
           <h2 className="text-2xl font-bold mb-2">Acceso Restringido</h2>
           <p className="text-zinc-400 text-sm mb-6">Introduce tu código de empleado para entrar.</p>
-          
+
           <form onSubmit={handleAuth} className="w-full flex flex-col gap-4">
             <div>
               <input
@@ -106,7 +106,7 @@ export default function BarberView() {
       <header className="flex flex-col sm:flex-row gap-6 justify-between items-center mb-8 md:mb-10 text-center sm:text-left">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-accent to-accent-light">
-            Portal del Barbero
+            Portal del Barber
           </h1>
           <p className="text-zinc-400 mt-1 text-sm md:text-base">Gestión de servicios y ganancias</p>
         </div>
@@ -124,12 +124,12 @@ export default function BarberView() {
           <h3 className="text-zinc-400 text-sm md:text-base font-medium mb-1">Total de Trabajos</h3>
           <p className="text-3xl md:text-4xl font-bold text-accent">{totalCortes}</p>
         </GlassCard>
-        
+
         <GlassCard className="border-emerald-500/30 p-5 md:p-6">
           <h3 className="text-zinc-400 text-sm md:text-base font-medium mb-1">Mi Ganancia</h3>
           <p className="text-3xl md:text-4xl font-bold text-emerald-400">${barberGananciaAcumulada.toLocaleString()}</p>
         </GlassCard>
-        
+
         <GlassCard className="border-red-500/30 p-5 md:p-6 sm:col-span-2 md:col-span-1">
           <h3 className="text-zinc-400 text-sm md:text-base font-medium mb-1">Deuda al Jefe</h3>
           <p className="text-3xl md:text-4xl font-bold text-red-400">${deudaJefeAcumulada.toLocaleString()}</p>
@@ -162,18 +162,18 @@ export default function BarberView() {
                   <tr key={c._id} className="border-b border-zinc-800/50 hover:bg-zinc-800/30 transition-colors">
                     <td className="py-4 px-4 font-mono text-xs text-zinc-500">{c._id.slice(-6).toUpperCase()}</td>
                     <td className="py-4 px-4 text-zinc-300 font-medium whitespace-nowrap">
-                      {c.tipoServicio === 'corte' ? 'Corte Sencillo' : 
-                       c.tipoServicio === 'cerquillos' ? 'Cerquillos' : 
-                       c.tipoServicio === 'barba' ? 'Barba' : 
-                       c.tipoServicio === 'corte_barba' ? 'Corte con Barba' : 'Corte Sencillo'}
+                      {c.tipoServicio === 'corte' ? 'Corte Sencillo' :
+                        c.tipoServicio === 'cerquillos' ? 'Cerquillos' :
+                          c.tipoServicio === 'barba' ? 'Barba' :
+                            c.tipoServicio === 'corte_barba' ? 'Corte con Barba' : 'Corte Sencillo'}
                     </td>
                     <td className="py-4 px-4 text-sm">{new Date(c.fecha).toLocaleString()}</td>
                     <td className="py-4 px-4">
                       <div className="flex items-center gap-2">
                         <div className="w-full bg-zinc-800 h-2 rounded-full overflow-hidden min-w-[60px]">
-                          <div 
-                            className="bg-accent h-full" 
-                            style={{width: `${c.rating}%`, backgroundColor: c.rating < 50 ? '#ef4444' : c.rating < 80 ? '#f59e0b' : '#10b981'}}
+                          <div
+                            className="bg-accent h-full"
+                            style={{ width: `${c.rating}%`, backgroundColor: c.rating < 50 ? '#ef4444' : c.rating < 80 ? '#f59e0b' : '#10b981' }}
                           />
                         </div>
                         <span className="text-sm font-medium">{c.rating}%</span>
@@ -196,12 +196,12 @@ export default function BarberView() {
           <GlassCard className="w-full max-w-md bg-zinc-900 shadow-2xl">
             <h2 className="text-2xl font-bold mb-6">Anotar Nuevo Corte</h2>
             <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-              
+
               <div>
                 <label className="block text-sm font-medium text-zinc-400 mb-2">
                   Tipo de Trabajo
                 </label>
-                <select 
+                <select
                   value={tipoServicio}
                   onChange={(e) => setTipoServicio(e.target.value)}
                   className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl p-3 text-sm focus:outline-none focus:border-accent transition-colors appearance-none text-zinc-200"
@@ -217,10 +217,10 @@ export default function BarberView() {
                 <label className="block text-sm font-medium text-zinc-400 mb-2">
                   Calificación del Servicio ({rating}/100)
                 </label>
-                <input 
-                  type="range" 
-                  min="1" 
-                  max="100" 
+                <input
+                  type="range"
+                  min="1"
+                  max="100"
                   value={rating}
                   onChange={(e) => setRating(Number(e.target.value))}
                   className="w-full accent-accent h-2 bg-zinc-800 rounded-lg appearance-none cursor-pointer"
@@ -231,7 +231,7 @@ export default function BarberView() {
                 <label className="block text-sm font-medium text-zinc-400 mb-2">
                   Área de Mejora para Próximo Servicio
                 </label>
-                <textarea 
+                <textarea
                   className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl p-3 text-sm focus:outline-none focus:border-accent transition-colors"
                   rows={4}
                   placeholder="Ej. Mejorar el degradado..."
@@ -242,15 +242,15 @@ export default function BarberView() {
               </div>
 
               <div className="flex gap-4 mt-4">
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   onClick={() => setShowModal(false)}
                   className="flex-1 py-3 rounded-xl border border-zinc-700 hover:bg-zinc-800 font-medium transition-colors cursor-pointer"
                 >
                   Cancelar
                 </button>
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   disabled={submitting}
                   className="flex-1 py-3 rounded-xl bg-accent hover:bg-accent-light text-white font-medium transition-colors cursor-pointer disabled:opacity-50"
                 >
