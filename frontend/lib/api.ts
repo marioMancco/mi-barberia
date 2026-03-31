@@ -40,3 +40,18 @@ export async function obtenerCortes(): Promise<Corte[]> {
   const data = await res.json();
   return data.data;
 }
+
+export async function pagarDeuda() {
+  const res = await fetch(`${API_URL}/cortes/pagar`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  
+  if (!res.ok) {
+    throw new Error('Error al reiniciar la deuda');
+  }
+  
+  return res.json();
+}

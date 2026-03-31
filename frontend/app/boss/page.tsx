@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from 'react';
 import { GlassCard } from '@/components/GlassCard';
-import { Corte, obtenerCortes } from '@/lib/api';
+import { Corte, obtenerCortes, pagarDeuda } from '@/lib/api';
 
 export default function BossView() {
   const [cortes, setCortes] = useState<Corte[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isResetting, setIsResetting] = useState(false);
 
   useEffect(() => {
     const fetchCortes = async () => {
@@ -25,6 +26,25 @@ export default function BossView() {
     const interval = setInterval(fetchCortes, 10000);
     return () => clearInterval(interval);
   }, []);
+
+  const handlePagarDeuda = async () => {
+    if (!window.confirm('¿Estás seguro de que el barbero ya pagó y quieres reiniciar la deuda?')) return;
+    
+    setIsResetting(true);
+    try {
+      const response = await pagarDeuda();
+      if (!response.success && response.message) {
+          throw new Error(response.message);
+      }
+      const updatedCortes = await obtenerCortes();
+      setCortes(updatedCortes);
+    } catch (err) {
+      console.error(err);
+      alert('Hubo un error al reiniciar la deuda');
+    } finally {
+      setIsResetting(false);
+    }
+  };
 
   const totalCortes = cortes.length;
   const sumatoriaDeuda = cortes.reduce((sum, c) => sum + (c.comisionJefe ?? 5000), 0);
@@ -47,7 +67,16 @@ export default function BossView() {
         <GlassCard className="flex flex-col items-center py-8 md:py-10 border-accent/20 bg-accent/5">
           <h3 className="text-zinc-400 text-base md:text-lg font-medium mb-2 md:mb-3">Sumatoria a Cobrar</h3>
           <div className="text-4xl sm:text-5xl md:text-6xl font-bold text-accent">${sumatoriaDeuda.toLocaleString()}</div>
-          <p className="text-zinc-500 text-xs md:text-sm mt-3">Total Deuda Acumulada</p>
+          <p className="text-zinc-500 text-xs md:text-sm mt-3 mb-6">Total Deuda Acumulada</p>
+          
+          <button
+            onClick={handlePagarDeuda}
+            disabled={isResetting || sumatoriaDeuda === 0}
+            className="flex items-center gap-2 px-6 py-3 bg-purple-500/10 backdrop-blur-md border border-purple-500/30 hover:bg-purple-500/20 text-purple-400 hover:text-purple-300 font-bold rounded-xl shadow-lg shadow-purple-500/10 transition-all hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            {isResetting ? 'Reiniciando...' : 'Barbero Pagó'}
+          </button>
         </GlassCard>
       </div>
 

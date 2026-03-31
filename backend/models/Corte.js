@@ -28,6 +28,10 @@ const corteSchema = new mongoose.Schema({
   areaMejora: {
     type: String,
     trim: true,
+  },
+  pagado: {
+    type: Boolean,
+    default: false,
   }
 });
 

@@ -63,7 +63,7 @@ exports.registrarCorte = async (req, res) => {
 
 exports.obtenerCortes = async (req, res) => {
   try {
-    const cortes = await Corte.find().sort({ fecha: -1 });
+    const cortes = await Corte.find({ pagado: false }).sort({ fecha: -1 });
     
     res.status(200).json({
       success: true,
@@ -73,6 +73,24 @@ exports.obtenerCortes = async (req, res) => {
     res.status(500).json({
       success: false,
       message: 'Error al obtener cortes',
+      error: error.message
+    });
+  }
+};
+
+exports.pagarDeuda = async (req, res) => {
+  try {
+    const result = await Corte.updateMany({ pagado: false }, { $set: { pagado: true } });
+    
+    res.status(200).json({
+      success: true,
+      message: 'Deuda reiniciada exitosamente',
+      modificados: result.modifiedCount
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error al reiniciar deuda',
       error: error.message
     });
   }
