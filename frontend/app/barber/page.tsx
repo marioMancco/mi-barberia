@@ -106,7 +106,7 @@ export default function BarberView() {
       <header className="flex flex-col sm:flex-row gap-6 justify-between items-center mb-8 md:mb-10 text-center sm:text-left">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-accent to-accent-light">
-            Portal del Barber
+            Portal del Barbero
           </h1>
           <p className="text-zinc-400 mt-1 text-sm md:text-base">Gestión de servicios y ganancias</p>
         </div>
