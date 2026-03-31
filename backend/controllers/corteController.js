@@ -63,7 +63,7 @@ exports.registrarCorte = async (req, res) => {
 
 exports.obtenerCortes = async (req, res) => {
   try {
-    const cortes = await Corte.find({ pagado: false }).sort({ fecha: -1 });
+    const cortes = await Corte.find().sort({ fecha: -1 });
     
     res.status(200).json({
       success: true,

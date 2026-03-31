@@ -45,7 +45,7 @@ export default function BarberView() {
   const totalCortes = cortes.length;
   // Based on the given rules: Barber gets 10,000 and Boss gets 5,000 per cut
   const barberGananciaAcumulada = cortes.reduce((sum, c) => sum + (c.gananciaBarbero ?? 10000), 0);
-  const deudaJefeAcumulada = cortes.reduce((sum, c) => sum + (c.comisionJefe ?? 5000), 0);
+  const deudaJefeAcumulada = cortes.filter(c => !c.pagado).reduce((sum, c) => sum + (c.comisionJefe ?? 5000), 0);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -181,7 +181,9 @@ export default function BarberView() {
                     </td>
                     <td className="py-4 px-4 text-sm max-w-[200px] truncate" title={c.areaMejora}>{c.areaMejora || '-'}</td>
                     <td className="py-4 px-4 font-medium text-emerald-400">${c.gananciaBarbero.toLocaleString()}</td>
-                    <td className="py-4 px-4 font-medium text-red-400">${c.comisionJefe.toLocaleString()}</td>
+                    <td className="py-4 px-4 font-medium text-red-400">
+                      {c.pagado ? <span className="text-emerald-500 font-medium text-sm">✓ Pagado</span> : `$${c.comisionJefe.toLocaleString()}`}
+                    </td>
                   </tr>
                 ))}
               </tbody>

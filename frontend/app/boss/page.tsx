@@ -47,7 +47,7 @@ export default function BossView() {
   };
 
   const totalCortes = cortes.length;
-  const sumatoriaDeuda = cortes.reduce((sum, c) => sum + (c.comisionJefe ?? 5000), 0);
+  const sumatoriaDeuda = cortes.filter(c => !c.pagado).reduce((sum, c) => sum + (c.comisionJefe ?? 5000), 0);
 
   return (
     <div className="min-h-screen bg-background p-6 lg:p-12 text-foreground">
@@ -119,7 +119,9 @@ export default function BossView() {
                          c.tipoServicio === 'corte_barba' ? 'Corte con Barba' : 'Corte Sencillo'}
                       </td>
                       <td className="py-4 px-4 text-sm text-zinc-300">{new Date(c.fecha).toLocaleString()}</td>
-                      <td className="py-4 px-4 font-bold text-right text-accent">${c.comisionJefe.toLocaleString()}</td>
+                      <td className="py-4 px-4 font-bold text-right text-accent">
+                        {c.pagado ? <span className="text-purple-400 font-medium text-sm">✓ Pagado</span> : `$${c.comisionJefe.toLocaleString()}`}
+                      </td>
                     </tr>
                   ))}
                 </tbody>

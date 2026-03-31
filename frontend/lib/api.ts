@@ -9,6 +9,7 @@ export interface Corte {
   comisionJefe: number;
   rating: number;
   areaMejora: string;
+  pagado: boolean;
 }
 
 export async function registrarCorte(data: { tipoServicio: string, rating: number, areaMejora: string }) {
